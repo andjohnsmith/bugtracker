@@ -8,47 +8,47 @@ const Wrapper = styled.div`
   padding: 0 40px 40px 40px;
 `;
 
-const Update = styled.div`
+const Single = styled.div`
   color: #ef9b0f;
   cursor: pointer;
 `;
 
-class UpdateTicket extends Component {
-  updateTicket = (event) => {
+class ShowProject extends Component {
+  showProject = (event) => {
     event.preventDefault();
 
-    window.location.href = `/tickets/update/${this.props.id}`;
+    window.location.href = `/projects/${this.props.id}`;
   };
 
   render() {
-    return <Update onClick={this.updateTicket}>Update</Update>;
+    return <Single onClick={this.showProject}>Show</Single>;
   }
 }
 
-class TicketsList extends Component {
+class ProjectList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tickets: [],
+      projects: [],
       columns: [],
     };
   }
 
   componentDidMount = async () => {
-    await api.getAllTickets().then((tickets) => {
+    await api.getAllProjects().then((projects) => {
       this.setState({
-        tickets: tickets.data.data,
+        projects: projects.data.data,
       });
     });
   };
 
   render() {
-    const { tickets } = this.state;
+    const { projects } = this.state;
 
     const columns = [
       {
-        Header: 'Title',
-        accessor: 'title',
+        Header: 'Name',
+        accessor: 'name',
         filterable: true,
       },
       {
@@ -57,12 +57,12 @@ class TicketsList extends Component {
         filterable: true,
       },
       {
-        Header: 'Update',
+        Header: 'Show',
         accessor: '_id',
         Cell: function (props) {
           return (
             <span>
-              <UpdateTicket id={props.cell.value} />
+              <ShowProject id={props.cell.value} />
             </span>
           );
         },
@@ -70,16 +70,16 @@ class TicketsList extends Component {
     ];
 
     let showTable = true;
-    if (!tickets.length) {
+    if (!projects.length) {
       showTable = false;
     }
 
     return (
       <Wrapper>
-        {showTable && <TableView columns={columns} data={tickets} />}
+        {showTable && <TableView columns={columns} data={projects} />}
       </Wrapper>
     );
   }
 }
 
-export default TicketsList;
+export default ProjectList;

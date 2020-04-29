@@ -52,6 +52,7 @@ updateTicket = async (req, res) => {
     }
     ticket.title = body.title;
     ticket.description = body.description;
+    ticket.project = body.project;
     ticket
       .save()
       .then(() => {
@@ -105,6 +106,9 @@ getTickets = async (req, res) => {
   await Ticket.find({}, (err, tickets) => {
     if (err) {
       return res.status(400).json({ success: false, error: err });
+    }
+    if (req.query.project) {
+      tickets = tickets.filter((ticket) => ticket.project == req.query.project);
     }
     if (!tickets.length) {
       return res

@@ -1,16 +1,24 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import { NavBar } from '../components';
-import { TicketsList, TicketsInsert, TicketsUpdate } from '../pages';
+import { Header } from '../components';
+import {
+  ProjectList,
+  ProjectSingle,
+  TicketsList,
+  TicketsInsert,
+  TicketsUpdate,
+} from '../pages';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
     <Router>
-      <NavBar />
+      <Header />
       <Switch>
+        <Route path="/projects" exact component={ProjectList} />
+        <Route path="/projects/:id" exact component={ProjectSingle} />
         <Route path="/tickets/list" exact component={TicketsList} />
         <Route path="/tickets/create" exact component={TicketsInsert} />
         <Route path="/tickets/update/:id" exact component={TicketsUpdate} />

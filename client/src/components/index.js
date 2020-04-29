@@ -1,4 +1,4 @@
 import Links from './Links';
-import NavBar from './NavBar';
+import Header from './Header';
 
-export { Links, NavBar };
+export { Links, Header };
