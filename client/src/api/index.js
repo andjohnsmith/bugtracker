@@ -4,6 +4,7 @@ const api = axios.create({
   baseURL: 'http://localhost:3000/api',
 });
 
+export const insertProject = (payload) => api.post(`/projects`, payload);
 export const getAllProjects = () => api.get(`/projects`);
 export const getProjectById = (id) => api.get(`/projects/${id}`);
 
@@ -16,6 +17,7 @@ export const getTicketById = (id) => api.get(`/tickets/${id}`);
 export const getTicketsByProject = (id) => api.get(`/tickets/?project=${id}`);
 
 const apis = {
+  insertProject,
   getAllProjects,
   getProjectById,
   insertTicket,
