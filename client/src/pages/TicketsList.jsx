@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TableView } from '../components/TableView';
+import TableView from '../components/TableView';
 import api from '../api';
 
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ class UpdateTicket extends Component {
   updateTicket = (event) => {
     event.preventDefault();
 
-    window.location.href = `/tickets/update/${this.props.id}`;
+    window.location.href = `/tickets/${this.props.id}`;
   };
 
   render() {
@@ -76,6 +76,7 @@ class TicketsList extends Component {
 
     return (
       <Wrapper>
+        <h1>My Tickets</h1>
         {showTable && <TableView columns={columns} data={tickets} />}
       </Wrapper>
     );

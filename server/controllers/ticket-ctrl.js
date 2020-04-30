@@ -110,11 +110,6 @@ getTickets = async (req, res) => {
     if (req.query.project) {
       tickets = tickets.filter((ticket) => ticket.project == req.query.project);
     }
-    // if (!tickets.length) {
-    //   return res
-    //     .status(404)
-    //     .json({ success: false, error: `Ticket not found` });
-    // }
     return res.status(200).json({ success: true, data: tickets });
   }).catch((err) => console.log(err));
 };

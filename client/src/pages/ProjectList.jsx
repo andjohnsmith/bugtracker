@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import { TableView } from '../components/TableView';
-import { Button, Modal, Form } from 'react-bootstrap';
+import TableView from '../components/TableView';
+import { Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import api from '../api';
 
 import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  padding: 0 40px 40px 40px;
-`;
 
 const Single = styled.div`
   color: #ef9b0f;
@@ -56,7 +52,6 @@ class ProjectModal extends Component {
 
   handleCreateProject = async () => {
     const { name, description } = this.state;
-    console.log('Projet: ' + name + '-' + description);
     const payload = { name, description };
 
     await api.insertProject(payload).then((res) => {
@@ -72,7 +67,7 @@ class ProjectModal extends Component {
   render() {
     return (
       <React.Fragment>
-        <Button variant="success" onClick={this.handleShow}>
+        <Button variant="primary" onClick={this.handleShow}>
           Create new project
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose}>
@@ -136,25 +131,19 @@ class ProjectList extends Component {
 
     const columns = [
       {
-        Header: 'Name',
-        accessor: 'name',
-        filterable: true,
+        name: 'Name',
+        selector: 'name',
+        sortable: true,
       },
       {
-        Header: 'Description',
-        accessor: 'description',
-        filterable: true,
+        name: 'Description',
+        selector: 'description',
+        sortable: true,
       },
       {
-        Header: 'Show',
-        accessor: '_id',
-        Cell: function (props) {
-          return (
-            <span>
-              <ShowProject id={props.cell.value} />
-            </span>
-          );
-        },
+        name: 'Created At',
+        selector: 'createdAt',
+        sortable: true,
       },
     ];
 
@@ -164,11 +153,37 @@ class ProjectList extends Component {
     }
 
     return (
-      <Wrapper>
-        <h1>Projects</h1>
+      <React.Fragment>
+        <div className="breadcomb-area">
+          <Container>
+            <Row>
+              <Col>
+                <div className="breadcomb-list">
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <div className="breadcomb-wp">
+                        <div className="breadcomb-icon">
+                          <span className="notika-icon notika-windows">P</span>
+                        </div>
+                        <div className="breadcomb-ctn">
+                          <h2>Projects</h2>
+                          <p>Welcome to your projects.</p>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col lg={6} md={6} sm={6} xs={3}>
+                      <div className="breadcomb-report">
+                        <ProjectModal />
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
         {showTable && <TableView columns={columns} data={projects} />}
-        <ProjectModal />
-      </Wrapper>
+      </React.Fragment>
     );
   }
 }
