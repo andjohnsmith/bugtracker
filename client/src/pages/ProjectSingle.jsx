@@ -3,18 +3,6 @@ import TableView from '../components/TableView';
 import { Container, Row, Col, Modal, Form, Button } from 'react-bootstrap';
 import api from '../api';
 
-class ShowTicket extends Component {
-  showTicket = (event) => {
-    event.preventDefault();
-
-    window.location.href = `/tickets/${this.props.id}`;
-  };
-
-  render() {
-    return <div onClick={this.showTicket}>Update</div>;
-  }
-}
-
 class TicketModal extends Component {
   constructor(props) {
     super(props);
@@ -132,27 +120,22 @@ class ProjectSingle extends Component {
     const { name, description, tickets, id } = this.state;
     const columns = [
       {
-        Header: 'Title',
-        accessor: 'title',
-        filterable: true,
+        name: 'Title',
+        selector: 'title',
+        sortable: true,
       },
       {
-        Header: 'Description',
-        accessor: 'description',
-        filterable: true,
+        name: 'Description',
+        selector: 'description',
+        sortable: true,
       },
       {
-        Header: 'View',
-        accessor: '_id',
-        Cell: function (props) {
-          return (
-            <span>
-              <ShowTicket id={props.cell.value} />
-            </span>
-          );
-        },
+        name: 'Created At',
+        selector: 'createdAt',
+        sortable: true,
       },
     ];
+    const goToTicket = (row) => (window.location.href = '/tickets/' + row._id);
 
     let showTable = true;
     if (!tickets.length) {
@@ -160,19 +143,41 @@ class ProjectSingle extends Component {
     }
 
     return (
-      <Container fluid>
-        <Row>
-          <Col xs={6} md={4}>
-            <h1>{name}</h1>
-            <p>{description}</p>
-          </Col>
-          <Col xs={12} md={8}>
-            <h2>Tickets</h2>
-            <TicketModal project={id} />
-            {showTable && <TableView columns={columns} data={tickets} />}
-          </Col>
-        </Row>
-      </Container>
+      <React.Fragment>
+        <div className="breadcomb-area">
+          <Container>
+            <Row>
+              <Col>
+                <div className="breadcomb-list">
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <div className="breadcomb-wp">
+                        <div className="breadcomb-ctn">
+                          <h2>{name}</h2>
+                          <p>{description}</p>
+                        </div>
+                      </div>
+                    </Col>
+                    <Col lg={6} md={6} sm={6} xs={3}>
+                      <div className="breadcomb-report">
+                        <TicketModal id={id} />
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+        {showTable && (
+          <TableView
+            title="Tickets"
+            columns={columns}
+            data={tickets}
+            onRowClicked={goToTicket}
+          />
+        )}
+      </React.Fragment>
     );
   }
 }

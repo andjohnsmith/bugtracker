@@ -1,29 +1,7 @@
 import React, { Component } from 'react';
 import TableView from '../components/TableView';
+import { Container, Row, Col } from 'react-bootstrap';
 import api from '../api';
-
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  padding: 0 40px 40px 40px;
-`;
-
-const Update = styled.div`
-  color: #ef9b0f;
-  cursor: pointer;
-`;
-
-class UpdateTicket extends Component {
-  updateTicket = (event) => {
-    event.preventDefault();
-
-    window.location.href = `/tickets/${this.props.id}`;
-  };
-
-  render() {
-    return <Update onClick={this.updateTicket}>Update</Update>;
-  }
-}
 
 class TicketsList extends Component {
   constructor(props) {
@@ -47,27 +25,18 @@ class TicketsList extends Component {
 
     const columns = [
       {
-        Header: 'Title',
-        accessor: 'title',
-        filterable: true,
+        name: 'Title',
+        selector: 'title',
+        sortable: true,
       },
       {
-        Header: 'Description',
-        accessor: 'description',
-        filterable: true,
-      },
-      {
-        Header: 'Update',
-        accessor: '_id',
-        Cell: function (props) {
-          return (
-            <span>
-              <UpdateTicket id={props.cell.value} />
-            </span>
-          );
-        },
+        name: 'Description',
+        selector: 'description',
+        sortable: true,
       },
     ];
+
+    const goToTicket = (row) => (window.location.href = '/tickets/' + row._id);
 
     let showTable = true;
     if (!tickets.length) {
@@ -75,10 +44,37 @@ class TicketsList extends Component {
     }
 
     return (
-      <Wrapper>
-        <h1>My Tickets</h1>
-        {showTable && <TableView columns={columns} data={tickets} />}
-      </Wrapper>
+      <React.Fragment>
+        <div className="breadcomb-area">
+          <Container>
+            <Row>
+              <Col>
+                <div className="breadcomb-list">
+                  <Row>
+                    <Col lg={6} md={6} sm={6} xs={12}>
+                      <div className="breadcomb-wp">
+                        <div className="breadcomb-ctn">
+                          <h2>Tickets</h2>
+                          <p>Welcome to your tickets.</p>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+
+        {showTable && (
+          <TableView
+            title="Tickets"
+            columns={columns}
+            data={tickets}
+            onRowClicked={goToTicket}
+          />
+        )}
+      </React.Fragment>
     );
   }
 }

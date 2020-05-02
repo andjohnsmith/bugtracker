@@ -12,6 +12,8 @@ class Header extends Component {
             <Nav>
               <Nav.Link href="/projects">Projects</Nav.Link>
               <Nav.Link href="/tickets">Tickets</Nav.Link>
+            </Nav>
+            <Nav className="ml-auto">
               <NavDropdown title="User" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
                 <NavDropdown.Divider />

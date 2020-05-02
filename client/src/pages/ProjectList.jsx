@@ -3,25 +3,6 @@ import TableView from '../components/TableView';
 import { Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import api from '../api';
 
-import styled from 'styled-components';
-
-const Single = styled.div`
-  color: #ef9b0f;
-  cursor: pointer;
-`;
-
-class ShowProject extends Component {
-  showProject = (event) => {
-    event.preventDefault();
-
-    window.location.href = `/projects/${this.props.id}`;
-  };
-
-  render() {
-    return <Single onClick={this.showProject}>Show</Single>;
-  }
-}
-
 class ProjectModal extends Component {
   constructor(props) {
     super(props);
@@ -68,7 +49,7 @@ class ProjectModal extends Component {
     return (
       <React.Fragment>
         <Button variant="primary" onClick={this.handleShow}>
-          Create new project
+          Create
         </Button>
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
@@ -147,6 +128,9 @@ class ProjectList extends Component {
       },
     ];
 
+    const goToProject = (row) =>
+      (window.location.href = '/projects/' + row._id);
+
     let showTable = true;
     if (!projects.length) {
       showTable = false;
@@ -162,9 +146,6 @@ class ProjectList extends Component {
                   <Row>
                     <Col lg={6} md={6} sm={6} xs={12}>
                       <div className="breadcomb-wp">
-                        <div className="breadcomb-icon">
-                          <span className="notika-icon notika-windows">P</span>
-                        </div>
                         <div className="breadcomb-ctn">
                           <h2>Projects</h2>
                           <p>Welcome to your projects.</p>
@@ -182,7 +163,15 @@ class ProjectList extends Component {
             </Row>
           </Container>
         </div>
-        {showTable && <TableView columns={columns} data={projects} />}
+
+        {showTable && (
+          <TableView
+            title="Projects"
+            columns={columns}
+            data={projects}
+            onRowClicked={goToProject}
+          />
+        )}
       </React.Fragment>
     );
   }
